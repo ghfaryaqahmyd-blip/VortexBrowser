@@ -1,5 +1,7 @@
 package com.vortex.browser
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 
@@ -31,6 +34,7 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VortexBrowserScreen() {
+    val context = LocalContext.current
     var urlText by remember { mutableStateOf("https://www.google.com") }
     var currentUrl by remember { mutableStateOf("https://www.google.com") }
     var webViewInstance by remember { mutableStateOf<WebView?>(null) }
@@ -86,11 +90,20 @@ fun VortexBrowserScreen() {
             }) {
                 Text("خانه")
             }
+            OutlinedButton(onClick = {
+                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:hamidullahibrahimy79@gmail.com")
+                    putExtra(Intent.EXTRA_SUBJECT, "Vortex Browser Support")
+                }
+                context.startActivity(intent)
+            }) {
+                Text("پشتیبانی")
+            }
         }
 
         AndroidView(
-            factory = { context ->
-                WebView(context).apply {
+            factory = { ctx ->
+                WebView(ctx).apply {
                     settings.javaScriptEnabled = true
                     settings.domStorageEnabled = true
                     webViewClient = object : WebViewClient() {

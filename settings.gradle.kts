@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "VortexBrowser"
 include(":app")
-CCVYRE
+
